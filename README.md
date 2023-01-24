@@ -1,2 +1,2 @@
-# MaterialX-Library-Scraper
+# MaterialX Library Scraper
 Scraper for matlib.gpuopen.com
