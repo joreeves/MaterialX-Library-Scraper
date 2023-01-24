@@ -1,53 +1,16 @@
-"""
-A web scraper that scraper a website and downloads all of the links
-"""
-
 # %%
 
 import os
-import time
-import random
 from tqdm import tqdm
 
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
-# %%
-
-def pause(max_time=10):
-    time.sleep(random.randint(1, max_time))
-
-def n_current_downloads(path_to_downloads):
-    """Return the number of files currently downloading"""
-    return len([f for f in os.listdir(path_to_downloads) if f.endswith('.crdownload')])
-
-def download_wait(path_to_downloads, timeout=20, max_downloads=3):
-    seconds = 0
-    dl_wait = True
-    while dl_wait:
-        time.sleep(1)
-        dl_wait = False
-
-        n_dl = n_current_downloads(path_to_downloads)
-
-        # If the number of downloads is greater than the max number of downloads
-        # wait for the downloads to finish
-        if (n_dl >= max_downloads):
-            dl_wait = True
-        elif (n_dl == 0):
-            # If there are no downloads, wait for 1 second
-            dl_wait = False
-        elif (seconds >= timeout):
-            # If the timeout is reached, wait for 1 second
-            dl_wait = False
-           
-        seconds += 1
-
-    return seconds
+from utils import pause, download_wait
 
 #%%
 
@@ -70,7 +33,7 @@ op.add_argument('--disable-software-rasterizer')
 
 # %%
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=op)
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=op)
 driver.get("https://matlib.gpuopen.com/main/materials/all")
 
 wait = WebDriverWait(driver, 10)
